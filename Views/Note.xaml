@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiApp1.Models"
+             x:Class="MauiApp1.Views.Note"
+             x:DataType="models:Note"
+             Title="Note">
+    <VerticalStackLayout>
+        <Editor Placeholder="enter your text" x:Name="TextEditor" HeightRequest="100" Text="{Binding Text}"/>
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="4">
+            <Button Text="Save" Clicked="SaveButton_clicked" />
+            <Button Text="Delete" Grid.Column="1" Clicked="Delete_Button"/>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
