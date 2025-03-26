@@ -1,10 +1,19 @@
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace MauiApp1.Views;
 
+[QueryProperty(nameof(ItemId),nameof(ItemId))]
 public partial class Note : ContentPage
 {
-    string _fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.text");
+	public string ItemId
+	{
+		set
+		{
+			LoadNote(value);
+		}
+	}
+    //string _fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.text");
 
 	private void LoadNote(string fileName)
 	{
@@ -26,17 +35,24 @@ public partial class Note : ContentPage
 		LoadNote(Path.Combine(appDataPath,randomFileName));
 	}
 
-	private void SaveButton_clicked(object sender, EventArgs e)
+	private async void SaveButton_clicked(object sender, EventArgs e)
 	{
-		File.WriteAllText(_fileName, TextEditor.Text);
+		if(BindingContext is Models.Note note)
+		File.WriteAllText(note.FileName, TextEditor.Text);
+
+		await Shell.Current.GoToAsync("..");
 	}
 
-	private void Delete_Button(object sender, EventArgs e)
+	private async void Delete_Button(object sender, EventArgs e)
 	{
-		if(File.Exists(_fileName))
+		if(BindingContext is Models.Note note)
 		{
-			File.Delete(_fileName);
-		}
-		TextEditor.Text = string.Empty;
+            if (File.Exists(note.FileName))
+            {
+                File.Delete(note.FileName);
+            }
+        }
+		
+		await Shell.Current.GoToAsync("..");
 	}
 }
